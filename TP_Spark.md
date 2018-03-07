@@ -1,6 +1,6 @@
-# TP Spark
+# TP Spark :gem::gem::gem:
 
-## Fichier Diamonds.csv, a data frame with 53940 rows and 10 variables :gem::gem::gem:
+## Fichier Diamonds.csv, a data frame with 53940 rows and 10 variables 
 * price price in US dollars (\$326--\$18,823)
 * carat weight of the diamond (0.2--5.01)
 * cut quality of the cut (Fair, Good, Very Good, Premium, Ideal)
@@ -88,7 +88,7 @@ only showing top 20 rows
 
 ## Requêtes Spark 
 
-### prix total des diamants du dataframe
+### Prix total des diamants du dataframe
 ```
 scala> df.agg(sum("price")).show()
 +----------+
