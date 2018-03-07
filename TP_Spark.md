@@ -25,7 +25,7 @@ ubuntu:~$ hdfs dfs -copyFromLocal /home/ubuntu/diamonds.csv /user/hdfs/
 ```
 
 ### Création d'un objet scala pointant vers le dataframe
-```
+```scala
 ubuntu:~$ sudo su spark
 spark:/home/ubuntu$ export SPARK_MAJOR_VERSION=2
 spark:/home/ubuntu$ cd /usr/hdp/current/spark2-client/
@@ -35,13 +35,13 @@ scala> val df = spark.read.format("csv").option("header", "true").option("inferS
 ```
 
 ### Vérification du typage du dataframe
-```
+```scala
 scala> :type df
 org.apache.spark.sql.DataFrame
 ```
 
 ### Affichage du schéma inférencé du dataframe
-```
+```scala
 scala> df.printSchema()
 root
  |-- carat: double (nullable = true)
@@ -57,7 +57,7 @@ root
 ```
 
 ### Affichage des données
-```
+```scala
 scala> df.show()
 +-----+---------+-----+-------+-----+-----+-----+----+----+----+
 |carat|      cut|color|clarity|depth|table|price|   x|   y|   z|
@@ -89,7 +89,7 @@ only showing top 20 rows
 ## Requêtes Spark 
 
 ### Prix total des diamants du dataframe
-```
+```scala
 scala> df.agg(sum("price")).show()
 +----------+
 |sum(price)|
@@ -99,7 +99,7 @@ scala> df.agg(sum("price")).show()
 ```
 
 ### Prix min et max d’un diamant
-```
+```scala
 scala> df.groupBy("cut").agg(min("price"),max("price"), mean("price"),avg("price")).sort(asc("cut")).show()
 +---------+----------+----------+------------------+------------------+
 |      cut|min(price)|max(price)|        avg(price)|        avg(price)|
@@ -113,7 +113,7 @@ scala> df.groupBy("cut").agg(min("price"),max("price"), mean("price"),avg("price
 ```
 
 ### Prix croissant par carat
-```
+```scala
 scala> df.sort(asc("price")).show()
 +-----+---------+-----+-------+-----+-----+-----+----+----+----+
 |carat|      cut|color|clarity|depth|table|price|   x|   y|   z|
@@ -143,7 +143,7 @@ only showing top 20 rows
 ```
 
 ### Afficher les 20 diamants idéals les moins chers
-```
+```scala
 scala> df.filter(df("cut") === "Ideal").sort(asc("carat")).show(20)
 +-----+-----+-----+-------+-----+-----+-----+----+----+----+
 |carat|  cut|color|clarity|depth|table|price|   x|   y|   z|
@@ -172,7 +172,7 @@ scala> df.filter(df("cut") === "Ideal").sort(asc("carat")).show(20)
 ```
 
 ### Nombre de diamants du dataframe par clarté de couleur (J= worst, D= best)
-```
+```scala
 scala> df.groupBy("color").count().sort(desc("color")).show()
 +-----+-----+
 |color|count|
@@ -188,7 +188,7 @@ scala> df.groupBy("color").count().sort(desc("color")).show()
 ```
 
 ###  Valeur totale des diamants par couleur
-```
+```scala
 scala> df.groupBy("color").sum("price").sort(asc("sum(price)")).show()
 +-----+----------+
 |color|sum(price)|
@@ -204,7 +204,7 @@ scala> df.groupBy("color").sum("price").sort(asc("sum(price)")).show()
 ```
 
 ### Valeur min et max des diamants par couleur
-```
+```scala
 scala> df.groupBy("color").agg(min("price"), max("price")).sort(desc("color")).show()
 +-----+----------+----------+
 |color|min(price)|max(price)|
@@ -220,7 +220,7 @@ scala> df.groupBy("color").agg(min("price"), max("price")).sort(desc("color")).s
 ```
 
 ### Prix moyen des diamants par couleur
-```
+```scala
 scala> df.groupBy("color").avg("price").sort(desc("avg(price)")).show()
 +-----+------------------+
 |color|        avg(price)|
@@ -236,7 +236,7 @@ scala> df.groupBy("color").avg("price").sort(desc("avg(price)")).show()
 ```
 
 ### Prix min et max des diamants par carat
-```
+```scala
 scala> df.groupBy("carat").agg(min("price"),max("price")).sort(asc("carat")).show()
 +-----+----------+----------+
 |carat|min(price)|max(price)|
@@ -266,7 +266,7 @@ only showing top 20 rows
 ```
 
 ### Prix min et max des diamants par coupe
-```
+```scala
 scala> df.groupBy("cut").agg(min("price"),max("price")).sort(asc("cut")).show()
 +---------+----------+----------+
 |      cut|min(price)|max(price)|
@@ -280,7 +280,7 @@ scala> df.groupBy("cut").agg(min("price"),max("price")).sort(asc("cut")).show()
 ```
 
 ### Prix min et max par clarté des diamants (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
-```
+```scala
 scala> df.groupBy("clarity").agg(min("price"),max("price")).sort(asc("max(price)")).show()
 +-------+----------+----------+
 |clarity|min(price)|max(price)|
@@ -297,7 +297,7 @@ scala> df.groupBy("clarity").agg(min("price"),max("price")).sort(asc("max(price)
 ```
 
 ### Afficher les diamants supérieurs à 5 carats 
-```
+```scala
 scala> df.filter(df("carat") > 5).show()
 +-----+----+-----+-------+-----+-----+-----+-----+-----+----+
 |carat| cut|color|clarity|depth|table|price|    x|    y|   z|
@@ -307,7 +307,7 @@ scala> df.filter(df("carat") > 5).show()
 ```
 
 ### Afficher les diamants valant entre 800 et 1000 euros
-```
+```scala
 df.createTempView("diamonds")
 scala> spark.sql("SELECT * FROM diamonds WHERE price BETWEEN '800' AND '1000'").show()
 +-----+---------+-----+-------+-----+-----+-----+----+----+----+
@@ -340,7 +340,7 @@ only showing top 20 rows
 ## Utilisation de deux dataframes
 
 ### df2 : nouvel dataset sans schéma inférencé, comparé à df au schéma inférencé
-```
+```scala
 scala> val df2 = spark.read.format("csv").option("header", "true").load("/user/hdfs/diamonds.csv")
 18/03/06 14:54:16 WARN FileStreamSink: Error while looking for metadata directory.
 18/03/06 14:54:16 WARN FileStreamSink: Error while looking for metadata directory.
@@ -375,7 +375,7 @@ root
 ```
 
 ### df3 : suppression des colonnes depth, table, x, y, z de df
-```
+```scala
 scala> val df3 = df.drop($"depth").drop($"table").drop($"x").drop($"y").drop($"z")
 df3: org.apache.spark.sql.DataFrame = [carat: double, cut: string ... 3 more fields]
 
@@ -408,7 +408,7 @@ only showing top 20 rows
 ```
 
 ### df4 : dataframe avec uniquement les colonnes carat et price
-```
+```scala
 scala> val df4 = df3.drop($"cut").drop($"color").drop($"clarity")
 df4: org.apache.spark.sql.DataFrame = [carat: double, price: int]
 
@@ -441,7 +441,7 @@ only showing top 20 rows
 ```
 
 ### dfJoin : join de df3 et df4 grâce à la colonne carat et price
-```
+```scala
 scala> val dfJoin = df4.join(df3, Seq("carat", "price"))
 dfJoin: org.apache.spark.sql.DataFrame = [carat: double, price: int ... 3 more fields]
 
