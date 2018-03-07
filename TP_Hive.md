@@ -1,4 +1,4 @@
-# TP Hive avec HiveQL :notes::notes::notes:
+# TP Hive avec HiveQL :musical_note::musical_score::guitar::postal_horn::violin::trumpet::microphone::saxophone::musical_note:
 
 ## Fichier csv "Fête de la musique" : 26 colonnes, 3761 lignes 
 
