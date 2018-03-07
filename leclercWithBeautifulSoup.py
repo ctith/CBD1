@@ -18,7 +18,6 @@ url = "http://www.e-leclerc.com/catalogue/marques-distributeurs/marque-repere/al
     </div>
 """
 
-
 # Recupere reponse HTTP GET du site
 r = requests.get(url)
 
