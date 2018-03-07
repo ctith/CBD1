@@ -8,12 +8,12 @@ ctith:/$ sudo scp -r -i Clé_AWS.pem /path_local/fete_musique.csv ubuntu@IP_publ
 ```
 
 ### Création d'une database "culturedb" sur Hive
-```
+```SQL
 CREATE DATABASE IF NOT EXISTS culturedb;
 ```
 
 ### Création d'une table "fete_musique" dans la database "culturedb" sur Hive
-```
+```SQL
 CREATE TABLE IF NOT EXISTS culturedb.fete_musique ( 
 identifiant INT, 
 link STRING, 
@@ -44,7 +44,7 @@ city_district STRING);
 ```
 
 ### Importer le csv selon le délimiteur ";"
-```
+```SQL
 alter table fete_musique set SERDEPROPERTIES ('field.delim' = '\;');
 LOAD DATA LOCAL INPATH '/home/ubuntu/fete_musique.csv' OVERWRITE INTO TABLE fete_musique ;
 ```
@@ -57,41 +57,41 @@ ubuntu@:~$ yarn application -list
 ```
 
 ### Afficher toutes les fêtes commençant le 22 juin
-```
+```SQL
 SELECT titre,adresse, ville, first_date FROM fete_musique WHERE first_date='22/06/2017';
 ```
 
 ### Afficher toutes les fêtes à entrées gratuites
-```
+```SQL
 SELECT titre, billetterie, adresse, ville, first_date FROM fete_musique WHERE billetterie RLIKE 'Gratuit';
 ```
 
 ### Afficher toutes les fêtes avec du jazz en programmation
-```
+```SQL
 SELECT titre, adresse, ville, keywords FROM fete_musique WHERE description RLIKE 'jazz';
 ```
 
 ### Nombre de ville fêtant la fête de la musique
-```
+```SQL
 SELECT ville FROM fete_musique GROUP BY ville;
 ```
 
 ### Adresse des fêtes ayant de la musique classique en programmation
-```
+```SQL
 SELECT titre,adresse, ville, keywords FROM fete_musique WHERE description RLIKE ‘classique’;
 ```
 
 ### Fêtes se déroulant au sein d'un arrondissement
-```
+```SQL
 SELECT titre, adresse, ville, city_district FROM fete_musique WHERE city_district RLIKE 'Arrondissement';
 ```
 
 ### Liste de fêtes se déroulant à Paris 5ème à partir de 20h
-```
+```SQL
 SELECT titre, adresse, ville, city_district,horaire_iso FROM fete_musique WHERE horaire_iso RLIKE '20' AND city_district RLIKE 'Paris 5e';
 ```
 
 ### Liste de fêtes se déroulant en Corse
-```
+```SQL
 SELECT titre, adresse, ville, region, horaire_iso FROM fete_musique WHERE region RLIKE 'Corse';
 ```
