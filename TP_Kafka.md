@@ -1,11 +1,11 @@
 # TP KAFKA
 ## Sous windows 
 ### Installation de Kafka sous windows
-[https://kafka.apache.org/downloads](https://kafka.apache.org/downloads)
+> [https://kafka.apache.org/downloads](https://kafka.apache.org/downloads)
 télécharger la version correspondant à la version qu’on a de scala, puis décompresser en local
 
 ### Commandes windows kafka
-attention aux backslash (différent sous linux)
+> attention aux backslash (différent sous linux)
 ```
 bin\\windows\\zookeeper-server-start.bat config\\zookeeper.properties
 
@@ -319,6 +319,7 @@ Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
         Topic: cars-topic       Partition: 4    Leader: 2       Replicas: 2,1,3 Isr: 2,1,3
 ```
 #### APRES
+> On passe de 4 brockers à 1 brocker : certaines partitions n'auront plus de brocker leader donc kafka n'enverra pas ces partitions au producer pour une réécriture. Les données de ces partitions existent toujours mais elles sont dans un brocker qui est fermé. Pour y accéder, il faudra juste restarter le brocker.
 ```
 ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
 Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
@@ -351,6 +352,7 @@ Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
         Topic: cars-topic       Partition: 4    Leader: 2       Replicas: 2,1,3 Isr: 2
 ```
 #### ALL BROCKERS BACK
+> On reprend la même configuration de leader qu'au départ mais cela est sûrement du à la rapidité de réponse des brockers aux signaux de kafka. Il ne s'agit pas d'une réattribution consciente, l'attribution des leaders se fait toujours "aléatoirement".
 ```
 ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
 Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
