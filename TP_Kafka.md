@@ -307,8 +307,8 @@ ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ sudo bin/kafka-console-consu
 28
 33
 ```
-### Tuer les leader broker 1,2,3
-##### AVANT
+### LE KILL DES BROCKERS
+#### AVANT
 ```
 ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
 Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
@@ -318,7 +318,7 @@ Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
         Topic: cars-topic       Partition: 3    Leader: 1       Replicas: 1,3,0 Isr: 1,3,0
         Topic: cars-topic       Partition: 4    Leader: 2       Replicas: 2,1,3 Isr: 2,1,3
 ```
-##### APRES KILL des brockers 1, 2, 3
+#### APRES
 ```
 ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
 Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
@@ -335,4 +335,28 @@ Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
         Topic: cars-topic       Partition: 2    Leader: 0       Replicas: 0,2,3 Isr: 0
         Topic: cars-topic       Partition: 3    Leader: 0       Replicas: 1,3,0 Isr: 0
         Topic: cars-topic       Partition: 4    Leader: -1      Replicas: 2,1,3 Isr:
+```
+
+### LE RETOUR DES BROCKERS 
+#### BROCKER 2 BACK
+```
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$bin/kafka-server-start.sh config/server-2.properties &
+
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
+Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
+        Topic: cars-topic       Partition: 0    Leader: 0       Replicas: 2,0,1 Isr: 0,2
+        Topic: cars-topic       Partition: 1    Leader: 2       Replicas: 3,1,2 Isr: 2
+        Topic: cars-topic       Partition: 2    Leader: 0       Replicas: 0,2,3 Isr: 0,2
+        Topic: cars-topic       Partition: 3    Leader: 0       Replicas: 1,3,0 Isr: 0
+        Topic: cars-topic       Partition: 4    Leader: 2       Replicas: 2,1,3 Isr: 2
+```
+#### ALL BROCKERS BACK
+```
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --describe --zookeeper 34.249.95.103:2181 --topic cars-topic
+Topic:cars-topic        PartitionCount:5        ReplicationFactor:3     Configs:
+        Topic: cars-topic       Partition: 0    Leader: 2       Replicas: 2,0,1 Isr: 0,2,1
+        Topic: cars-topic       Partition: 1    Leader: 3       Replicas: 3,1,2 Isr: 2,3,1
+        Topic: cars-topic       Partition: 2    Leader: 0       Replicas: 0,2,3 Isr: 0,2,3
+        Topic: cars-topic       Partition: 3    Leader: 1       Replicas: 1,3,0 Isr: 0,3,1
+        Topic: cars-topic       Partition: 4    Leader: 2       Replicas: 2,1,3 Isr: 2,3,1
 ```
