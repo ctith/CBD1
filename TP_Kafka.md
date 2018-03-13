@@ -278,3 +278,32 @@ ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ bin/kafka-topics.sh --list -
 	yolo
 ```
 
+_____________
+### Lire le topic cars-topic à partir d’un groupe de consumer
+
+#### Créer un fichier consumer-propertie pour chaque nouveau consumer
+```
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka/config$ cp consumer.properties consumer-2.properties
+```
+
+#### Modifier le fichier config
+```
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka/config$ sudo vi consumer-2.properties
+
+zookeeper.connect=34.249.95.103:2181
+group.id=yolo
+```
+#### Ecouter les messages de Pierre-Dominique
+```
+ubuntu@ip-172-31-31-224:/usr/hdp/2.6.3.0-235/kafka$ sudo bin/kafka-console-consumer.sh --bootstrap-server 34.249.95.103:9092 --topic cars-topic --from-beginning --consumer.config config/consumer-2.properties
+
+\[2018-03-13 15:09:36,542\] WARN The configuration 'zookeeper.connect' was supplied but isn't a known config. (org.apache.kafka.clients.consumer.ConsumerConfig)
+\[2018-03-13 15:09:36,542\] WARN The configuration 'zookeeper.connection.timeout.ms' was supplied but isn't a known config. (org.apache.kafka.clients.consumer.ConsumerConfig)
+2
+7
+13
+18
+23
+28
+33
+```
