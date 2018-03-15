@@ -6,6 +6,9 @@ télécharger la version correspondant à la version qu’on a de scala, puis d�
 
 ### Commandes windows kafka
 > attention aux backslash (différent sous linux)
+
+faire ces commandes dans le dossier kafka : 
+> C:\Users\Fitec\kafka_2.11-1.0.1>
 ```
 bin\\windows\\zookeeper-server-start.bat config\\zookeeper.properties
 
